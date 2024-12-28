@@ -3,21 +3,29 @@ This is a simple browser console script that lets you export your entire Claude 
 
 
 Captures the complete chat history
+
 Preserves the conversation flow between you and Claude
+
 Labels messages clearly as "Human" or "Claude"
+
 Adds a timestamp
+
 Automatically downloads as a timestamped text file
+
 
 Basic Instructions
 
 While in your Claude chat:
 
 Press F12 (or right-click and select "Inspect")
+
 Click on "Console" tab in the developer tools
 
 
 Copy the entire script below
+
 Paste it into the console and press Enter
+
 A text file will automatically download with your conversation
 
 Script Features
