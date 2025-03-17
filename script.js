@@ -1,3 +1,4 @@
+
 // Configuration for the export
 const config = {
     includeTimestamps: true,
@@ -25,6 +26,10 @@ function formatMessage(message, config) {
         if (content.type === 'text') {
             formatted += content.text;
         }
+         // Add Artifact content if present
+        if (content.type === 'tool_use' && content.name === 'artifacts') {
+            formatted += '\n\n[Artifact Content]:\n' + content.input.content;
+        }
     });
     
     // Add file content if present and enabled
@@ -35,6 +40,8 @@ function formatMessage(message, config) {
             }
         });
     }
+
+   
     
     return formatted + '\n\n';
 }
