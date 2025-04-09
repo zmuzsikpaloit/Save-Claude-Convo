@@ -4,10 +4,10 @@ This is a simple browser console script that lets you export your entire Claude 
 
 -Captures the complete chat history
 -Preserves the conversation flow between you and Claude
--Labels messages clearly as "Human" or "Claude"
+-Labels messages clearly as "Human" or "Assistant"
 -Adds a timestamp
--Automatically downloads as a timestamped text file
-
+-Automatically downloads as a timestamped markdown file
+-Includes artifact content
 
 Basic Instructions
 
@@ -16,7 +16,9 @@ Press F12 (or right-click and select "Inspect")
 Click on "Console" tab in the developer tools
 
 
-Copy the entire script below
+Copy the entire script
 Paste it into the console and press Enter
 
-A text file will automatically download with your conversation
+A markdown file will automatically download with your conversation.
+
+You can also add it as a Snippet in teh developer tools so it's easier to use.
