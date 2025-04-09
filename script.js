@@ -1,4 +1,3 @@
-
 // Configuration for the export
 const config = {
     includeTimestamps: true,
@@ -52,24 +51,45 @@ function formatConversation(data, config) {
         return JSON.stringify(data, null, 2);
     }
 
-    let output = 'Claude Chat Export\n';
+    // Include chat title in the header if available
+    let output = data.name 
+        ? `Claude Chat Export - ${data.name}\n` 
+        : 'Claude Chat Export\n';
+    
     output += `Timestamp: ${formatTimestamp(data.created_at)}\n\n`;
     
     data.chat_messages.forEach(message => {
         output += formatMessage(message, config);
     });
     
+    // Pass both the formatted content and the chat title to downloadContent
+    downloadContent(output, config.exportFormat, data.name);
+    
     return output;
 }
 
 // Download the formatted content
-function downloadContent(content, format) {
+function downloadContent(content, format, chatTitle) {
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    
+    // Format current local time as YYYY-MM-DD_HH-MM-SS
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    
+    const localTimestamp = `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
+    
+    // Sanitize the chat title for use in filename (remove unsafe characters)
+    const sanitizedTitle = chatTitle ? chatTitle.replace(/[\/\\:*?"<>|]/g, '_') : 'claude-chat';
+    
     a.href = url;
-    a.download = `claude-chat-${timestamp}.${format === 'json' ? 'json' : 'txt'}`;
+    a.download = `${sanitizedTitle}-${localTimestamp}.${format === 'json' ? 'json' : 'md'}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -127,7 +147,6 @@ async function exportConversation() {
         
         // Format and download the conversation
         const formatted = formatConversation(data, config);
-        downloadContent(formatted, config.exportFormat);
         
         console.log('Export completed successfully!');
     } catch (error) {
